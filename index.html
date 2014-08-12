@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html ng-app="voyage">
     <head>
         <script src="angular.min.js"></script>
@@ -6,8 +6,8 @@
     </head>
     <body>
         <div ng-controller="ArticleController">
-            <a href="#" ng-click="loadArticle()">Charger un article</a>
-            <p>{{contenu}}</p>
+            <a href="#" ng-click="loadArticle(1)">Charger un article</a>
+            <div ng-include="articleCourant"></div>
         </div>
     </body>
 </html>
