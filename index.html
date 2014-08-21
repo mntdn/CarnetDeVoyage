@@ -6,7 +6,9 @@
     </head>
     <body>
         <div ng-controller="ArticleController">
-            <a href="#" ng-click="loadArticle(1)">Charger un article</a>
+            <div ng-repeat="jour in DB">
+                <a href="#" ng-click="loadArticle($index)">{{jour.Day | date : 'fullDate'}}</a>
+            </div>
             <div ng-include="articleCourant"></div>
         </div>
     </body>
