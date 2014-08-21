@@ -7,6 +7,7 @@
     <body>
         <div ng-controller="ArticleController">
             <div ng-repeat="jour in DB">
+                <img ng-src="{{randPicture(jour.Pictures)}}" style="width: 50px; height: 50px;" />
                 <a href="#" ng-click="loadArticle($index)">{{jour.Day | date : 'fullDate'}}</a>
             </div>
             <div ng-include="articleCourant"></div>
