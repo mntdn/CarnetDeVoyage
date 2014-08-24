@@ -6,6 +6,7 @@
     </head>
     <body>
         <div ng-controller="ArticleController">
+            <p ng-repeat="x in Months">Yo {{x}} *</p>
             <div ng-repeat="jour in DB">
                 <img ng-src="{{randPicture(jour.Pictures)}}" style="width: 50px; height: 50px;" />
                 <a href="#" ng-click="loadArticle($index)">{{jour.Day | date : 'fullDate'}}</a>
