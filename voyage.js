@@ -2,6 +2,16 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// renvoie l'index de l'entrée de la base DB du jour cherché
+// day doit être au format Date
+// -1 s'il ne trouve rien
+function dayIndex(day, DB) {
+    for(var i = 0; i < DB.length; i++)
+        if (new Date(DB[i].Day) === day)
+            return i;
+    return -1;
+}
+
 function calcMonths (DB) {
     // renvoie un tableau contenant les jours des mois
     // durant lesquels on a voyagé
@@ -10,10 +20,18 @@ function calcMonths (DB) {
     var currentDate = startDate;
     var returnArray = [];
     while (currentDate <= endDate) {
+        var tempCurrentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         var nbDaysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-        var currentDays = [];
-        for (var i = 1; i <= nbDaysInMonth; i++)
-            currentDays.push(i);
+        var currentDays = new Array();
+        for (var i = 1; i <= nbDaysInMonth; i++) {
+            var tempDay = {
+                'Day' : tempCurrentDate,
+                'PositionDB' : dayIndex(tempCurrentDate, DB)
+            };
+            currentDays.push(tempDay);
+            console.log(currentDays);
+            tempCurrentDate.setDate(tempCurrentDate.getDate() + 1);
+        }
         returnArray.push(currentDays);
         currentDate.setMonth(currentDate.getMonth() + 1);
     }
