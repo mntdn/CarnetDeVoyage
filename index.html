@@ -24,6 +24,19 @@
     </head>
     <body>
         <div ng-controller="ArticleController">
+            <div class="monthBox">
+                <h1>{{Months[MoisAffiche].Month | monthName}}</h1>
+                <div 
+                     ng-repeat="day in Months[MoisAffiche].Days" 
+                     ng-click="loadArticle(day.PositionDB)"
+                     class="dayBox" 
+                     style="{{moveFirst(day, $index)}};background-image: url('{{randPictureUrl(day.PositionDB)}}');background-size: 50px 50px;">
+                    {{day.Day | date : 'dd' }}
+                </div>
+            </div>
+            <a href="#" ng-click="prevMonth()" style="{{displayPrev()}}">&lt;</a> | 
+            <a href="#" ng-click="nextMonth()" style="{{displayNext()}}">&gt;</a>
+<!--
             <div ng-repeat="month in Months" class="monthBox">
                 <h1>{{month.Month | monthName}}</h1>
                 <div 
@@ -34,6 +47,7 @@
                     {{day.Day | date : 'dd' }}
                 </div>
             </div>
+-->
             <div ng-repeat="jour in DB">
                 <a href="#" ng-click="loadArticle($index)">{{jour.Day | date : 'fullDate'}}</a>
             </div>

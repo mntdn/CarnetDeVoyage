@@ -77,7 +77,7 @@ var _Months = calcMonths(_DB);
 
 angular.module('voyage', [])
     .filter('monthName', [function() {
-        return function (monthNumber) { //1 = January
+        return function (monthNumber) { //1 = Janvier
             var monthNames = [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
                 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ];
             return monthNames[monthNumber - 1];
@@ -86,6 +86,19 @@ angular.module('voyage', [])
     .controller('ArticleController', ['$scope', function ($scope) {
         $scope.DB = _DB;
         $scope.Months = _Months;
+        $scope.MoisAffiche = 0; // contient le mois actuellement affiché
+        $scope.prevMonth = function () {
+            $scope.MoisAffiche = $scope.MoisAffiche == 0 ? 0 : $scope.MoisAffiche - 1;
+        };
+        $scope.nextMonth = function () {
+            $scope.MoisAffiche = $scope.MoisAffiche == $scope.Months.length - 1 ? $scope.MoisAffiche : $scope.MoisAffiche + 1;
+        };
+        $scope.displayPrev = function () {
+            return $scope.MoisAffiche == 0 ? "display: none" : "";
+        };
+        $scope.displayNext = function () {
+            return $scope.MoisAffiche == $scope.Months.length - 1 ? "display: none" : "";
+        };
         $scope.articleCourant = '';
         $scope.moveFirst = function (day, i) {
             return i == 0 ? "margin-left: " + ((day.DayOfWeek - 1) * 52) + "px" : "";
