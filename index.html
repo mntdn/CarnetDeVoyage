@@ -6,23 +6,35 @@
         <style type="text/css">
             .monthBox {
                 border: 1px solid black;
-                width: 300px;
+                width: 380px;
+            }
+            
+            .monthBox h1 {
+                margin: 0 0 6px 0;
             }
             
             .dayBox {
                 border: 1px solid black;
-                width: 40px;
+                width: 50px;
+                height: 50px;
                 display: inline-block;
+                cursor: pointer;
             }
         </style>
     </head>
     <body>
         <div ng-controller="ArticleController">
             <div ng-repeat="month in Months" class="monthBox">
-                <div ng-repeat="day in month" class="dayBox" style="{{moveFirst(day, $index)}}">{{day.DayOfWeek}}</div>
+                <h1>{{month.Month | monthName}}</h1>
+                <div 
+                     ng-repeat="day in month.Days" 
+                     ng-click="loadArticle(day.PositionDB)"
+                     class="dayBox" 
+                     style="{{moveFirst(day, $index)}};background-image: url('{{randPictureUrl(day.PositionDB)}}');background-size: 50px 50px;">
+                    {{day.Day | date : 'dd' }}
+                </div>
             </div>
             <div ng-repeat="jour in DB">
-                <img ng-src="{{randPicture(jour.Pictures)}}" style="width: 50px; height: 50px;" />
                 <a href="#" ng-click="loadArticle($index)">{{jour.Day | date : 'fullDate'}}</a>
             </div>
             <div ng-include="articleCourant"></div>

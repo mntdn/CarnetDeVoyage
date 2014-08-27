@@ -34,16 +34,20 @@ function calcMonths (DB) {
     while (currentDate <= endDate) {
         var tempCurrentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         var nbDaysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+        var currentMonth = currentDate.getMonth() + 1;
         var currentDays = new Array();
         for (var i = 1; i <= nbDaysInMonth; i++) {
             currentDays.push({
-                'Day' : dateToString(tempCurrentDate),
+                'Day' : new Date(tempCurrentDate),
                 'PositionDB' : dayIndex(tempCurrentDate, DB),
                 'DayOfWeek' : tempCurrentDate.getDay() == 0 ? 7 : tempCurrentDate.getDay() // lundi = 1, dimanche = 7 
             });
             tempCurrentDate.setDate(tempCurrentDate.getDate() + 1);
         }
-        returnArray.push(currentDays);
+        returnArray.push({
+            'Month': currentMonth,
+            'Days': currentDays
+        });
         currentDate.setMonth(currentDate.getMonth() + 1);
     }
     return returnArray;
@@ -71,22 +75,27 @@ var _DB = [
 // permet d'éviter de recalculer à chaque fois le tableau des mois
 var _Months = calcMonths(_DB);
 
-//TODO : utiliser la liste de jours dans le mois créee pour faire un tableau ressemblant
-// à un calendrier avec seulement les jours où il s'est passé quelque chose qui
-// sont "pleins"
-
 angular.module('voyage', [])
+    .filter('monthName', [function() {
+        return function (monthNumber) { //1 = January
+            var monthNames = [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
+                'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ];
+            return monthNames[monthNumber - 1];
+        }
+    }]) 
     .controller('ArticleController', ['$scope', function ($scope) {
         $scope.DB = _DB;
         $scope.Months = _Months;
         $scope.articleCourant = '';
         $scope.moveFirst = function (day, i) {
-            return i == 0 ? "margin-left: " + ((day.DayOfWeek - 1) * 42) + "px" : "";
+            return i == 0 ? "margin-left: " + ((day.DayOfWeek - 1) * 52) + "px" : "";
         };
         $scope.loadArticle = function (i) {
-            $scope.articleCourant = $scope.DB[i].Content;
+            if (i >= 0)
+                $scope.articleCourant = $scope.DB[i].Content;
         };
-        $scope.randPicture = function (picList) {
-            return picList[getRandomInt(0, picList.length)].Url;
+        $scope.randPictureUrl = function (index) {
+            // renvoie une image aléatoire de l'entrée d'index "index" dans la DB
+            return index == -1 ? '' : $scope.DB[index].Pictures[getRandomInt(0, $scope.DB[index].Pictures.length)].Url;
         };
     }]);
