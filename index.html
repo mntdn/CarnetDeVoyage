@@ -1,23 +1,55 @@
 <!doctype html>
 <html ng-app="voyage">
     <head>
+        <meta charset="UTF-8">
         <script src="angular.min.js"></script>
+        <script src="ui-bootstrap-tpls-0.11.0.min.js"></script>
+        <script src="voyageDB.js"></script>
         <script src="voyage.js"></script>
+        <link rel="stylesheet" href="bootstrap.min.css">
         <style type="text/css">
+            /* pour bootstrap */
+            .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+            
             .monthBox {
-                border: 1px solid black;
+/*                border: 1px solid black;*/
                 width: 380px;
+                padding: 10px;
             }
             
             .monthBox h1 {
                 margin: 0 0 6px 0;
             }
             
-            .dayBox {
-                border: 1px solid black;
-                width: 50px;
-                height: 50px;
+            .monthNav {
+                margin: 0;
+                border: 0;
+                width: 32%;
                 display: inline-block;
+                cursor: pointer;
+                color: #ccc;
+            }
+            
+            .currentMonth {
+                font-weight: bold;
+                font-size: 18pt;
+                color: black;
+                cursor: default;
+            }
+            
+            .dayBox {
+                margin: 1px;
+                background-color: #f3f3f3;
+                text-align: center;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+                padding-top: 10px;
+                display: inline-block;
+            }
+            
+            .article {
+                background-color: #e3e3e3;
                 cursor: pointer;
             }
         </style>
@@ -25,32 +57,23 @@
     <body>
         <div ng-controller="ArticleController">
             <div class="monthBox">
-                <h1>{{Months[MoisAffiche].Month | monthName}}</h1>
+                <div class="monthNav" style="{{displayPrev()}}" ng-click="loadMonth(prevMonth())">{{Months[prevMonth()].Month | monthName}}</div>
+                <div class="monthNav currentMonth">{{Months[currentMonth].Month | monthName}}</div>
+                <div class="monthNav" style="{{displayNext()}}" ng-click="loadMonth(nextMonth())">{{Months[nextMonth()].Month | monthName}}</div>
                 <div 
-                     ng-repeat="day in Months[MoisAffiche].Days" 
+                     ng-repeat="day in Months[currentMonth].Days" 
                      ng-click="loadArticle(day.PositionDB)"
-                     class="dayBox" 
-                     style="{{moveFirst(day, $index)}};background-image: url('{{randPictureUrl(day.PositionDB)}}');background-size: 50px 50px;">
-                    {{day.Day | date : 'dd' }}
+                     ng-class="setDayClass(day)"
+                     class="dayBox"
+                     style="{{moveFirst(day, $index)}};">
+                    {{day.Day | date : 'd' }}
                 </div>
             </div>
-            <a href="#" ng-click="prevMonth()" style="{{displayPrev()}}">&lt;</a> | 
-            <a href="#" ng-click="nextMonth()" style="{{displayNext()}}">&gt;</a>
 <!--
-            <div ng-repeat="month in Months" class="monthBox">
-                <h1>{{month.Month | monthName}}</h1>
-                <div 
-                     ng-repeat="day in month.Days" 
-                     ng-click="loadArticle(day.PositionDB)"
-                     class="dayBox" 
-                     style="{{moveFirst(day, $index)}};background-image: url('{{randPictureUrl(day.PositionDB)}}');background-size: 50px 50px;">
-                    {{day.Day | date : 'dd' }}
-                </div>
-            </div>
--->
             <div ng-repeat="jour in DB">
                 <a href="#" ng-click="loadArticle($index)">{{jour.Day | date : 'fullDate'}}</a>
             </div>
+-->
             <div ng-include="articleCourant"></div>
         </div>
     </body>

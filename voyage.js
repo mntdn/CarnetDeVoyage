@@ -53,29 +53,10 @@ function calcMonths (DB) {
     return returnArray;
 }
 
-var _DB = [
-    {
-        'Day' : '2008-02-11',
-        'Pictures' : [
-            {'Url' : 'Mandarin_Pair.jpg'}, 
-            {'Url' : 'Glassy_carbon_and_a_1cm3_graphite_cube_HP68-79.jpg'}
-        ],
-        'Content' : 'voyage1.html'
-    },
-    {
-        'Day' : '2008-04-12',
-        'Pictures' : [
-            {'Url' : '1280px-Various_grains.jpg'}, 
-            {'Url' : 'NASA-HS201427a-HubbleUltraDeepField2014-20140603.jpg'}
-        ],
-        'Content' : 'voyage2.html'
-    }
-];
-
 // permet d'éviter de recalculer à chaque fois le tableau des mois
-var _Months = calcMonths(_DB);
+var _Months = calcMonths(window._DB);
 
-angular.module('voyage', [])
+angular.module('voyage', ['ui.bootstrap'])
     .filter('monthName', [function() {
         return function (monthNumber) { //1 = Janvier
             var monthNames = [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -84,24 +65,39 @@ angular.module('voyage', [])
         }
     }]) 
     .controller('ArticleController', ['$scope', function ($scope) {
-        $scope.DB = _DB;
+        $scope.DB = window._DB;
         $scope.Months = _Months;
-        $scope.MoisAffiche = 0; // contient le mois actuellement affiché
+        $scope.currentMonth = 0; // contient le mois actuellement affiché
         $scope.prevMonth = function () {
-            $scope.MoisAffiche = $scope.MoisAffiche == 0 ? 0 : $scope.MoisAffiche - 1;
+            // charge le mois précédent, ne fait rien si déjà en début de liste de mois
+            return $scope.currentMonth == 0 ? 0 : $scope.currentMonth - 1;
         };
         $scope.nextMonth = function () {
-            $scope.MoisAffiche = $scope.MoisAffiche == $scope.Months.length - 1 ? $scope.MoisAffiche : $scope.MoisAffiche + 1;
+            // charge le mois suivant, ne fait rien si déjà en début de liste de mois
+            return $scope.currentMonth == $scope.Months.length - 1 ? $scope.currentMonth : $scope.currentMonth + 1;
+        };
+        $scope.loadMonth = function (month) {
+            $scope.currentMonth = month;
         };
         $scope.displayPrev = function () {
-            return $scope.MoisAffiche == 0 ? "display: none" : "";
+            // permet d'afficher ou non le bouton permettant d'aller au mois précédent
+            // en fonction de la position dans la liste de mois
+            return $scope.currentMonth == 0 ? "visibility: hidden" : "";
         };
         $scope.displayNext = function () {
-            return $scope.MoisAffiche == $scope.Months.length - 1 ? "display: none" : "";
+            // permet d'afficher ou non le bouton permettant d'aller au mois suivant
+            // en fonction de la position dans la liste de mois
+            return $scope.currentMonth == $scope.Months.length - 1 ? "visibility: hidden" : "";
         };
         $scope.articleCourant = '';
         $scope.moveFirst = function (day, i) {
-            return i == 0 ? "margin-left: " + ((day.DayOfWeek - 1) * 52) + "px" : "";
+            // ajoute un décalage au premier jour dans le calendrier 
+            // lundi sera ainsi toujours la 1re case
+            return i == 0 ? "margin-left: " + ((day.DayOfWeek - 1) * 42) + "px" : "";
+        };
+        $scope.setDayClass = function (day) {
+            // s'il y a une article pour le jour, renvoie la classe correcte
+            return day.PositionDB < 0 ? "" : "article";
         };
         $scope.loadArticle = function (i) {
             if (i >= 0)
