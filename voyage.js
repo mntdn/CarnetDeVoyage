@@ -90,6 +90,7 @@ angular.module('voyage', ['ui.bootstrap'])
             return $scope.currentMonth == $scope.Months.length - 1 ? "visibility: hidden" : "";
         };
         $scope.articleCourant = '';
+        $scope.photosCourant = [];
         $scope.moveFirst = function (day, i) {
             // ajoute un décalage au premier jour dans le calendrier 
             // lundi sera ainsi toujours la 1re case
@@ -101,7 +102,10 @@ angular.module('voyage', ['ui.bootstrap'])
         };
         $scope.loadArticle = function (i) {
             if (i >= 0)
+            {
                 $scope.articleCourant = $scope.DB[i].Content;
+                $scope.photosCourant = $scope.DB[i].Pictures;
+            }
         };
         $scope.randPictureUrl = function (index) {
             // renvoie une image aléatoire de l'entrée d'index "index" dans la DB

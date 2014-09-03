@@ -15,6 +15,7 @@
 /*                border: 1px solid black;*/
                 width: 380px;
                 padding: 10px;
+                display: inline-block;
             }
             
             .monthBox h1 {
@@ -52,6 +53,16 @@
                 background-color: #e3e3e3;
                 cursor: pointer;
             }
+            
+            .articleBox {
+                display: inline-block;
+                vertical-align: top;
+            }
+            
+            .photoBox img {
+                width: 150px;
+                height: auto;
+            }
         </style>
     </head>
     <body>
@@ -69,12 +80,12 @@
                     {{day.Day | date : 'd' }}
                 </div>
             </div>
-<!--
-            <div ng-repeat="jour in DB">
-                <a href="#" ng-click="loadArticle($index)">{{jour.Day | date : 'fullDate'}}</a>
+            
+            <div ng-include="articleCourant" class="articleBox"></div>
+            <div class="photoBox">
+                <img ng-repeat="photo in photosCourant" ng-src="{{photo.Url}}" nb-click="photoCarousel()" />
             </div>
--->
-            <div ng-include="articleCourant"></div>
+<!--            Ajouter un visualiseur de photos avec un Carousel de Bootstrap-->
         </div>
     </body>
 </html>
