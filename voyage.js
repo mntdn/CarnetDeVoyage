@@ -111,4 +111,29 @@ angular.module('voyage', ['ui.bootstrap'])
             // renvoie une image aléatoire de l'entrée d'index "index" dans la DB
             return index == -1 ? '' : $scope.DB[index].Pictures[getRandomInt(0, $scope.DB[index].Pictures.length)].Url;
         };
+        //$scope.openModal = function () {
+        //    var modalInstance = $modal.open();
+
+        //    modalInstance.result.then(function (selectedItem) {
+        //            $scope.selected = selectedItem;
+        //        }, function () {
+        //            console.log('Modal dismissed at: ' + new Date());
+        //        });
+        //};
     }]);
+
+//var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+//
+//  $scope.items = items;
+//  $scope.selected = {
+//    item: $scope.items[0]
+//  };
+//
+//  $scope.ok = function () {
+//    $modalInstance.close($scope.selected.item);
+//  };
+//
+//  $scope.cancel = function () {
+//    $modalInstance.dismiss('cancel');
+//  };
+//};

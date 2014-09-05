@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html ng-app="voyage">
     <head>
         <meta charset="UTF-8">
@@ -85,6 +85,37 @@
             <div class="photoBox">
                 <img ng-repeat="photo in photosCourant" ng-src="{{photo.Url}}" nb-click="photoCarousel()" />
             </div>
+            <div style="width: 500px">
+                <carousel interval="-1">
+                    <slide ng-repeat="photo in photosCourant" active="slide.active">
+                        <img ng-src="{{photo.Url}}" style="margin:auto;">
+                        <div class="carousel-caption">
+                            <h4>Slide {{$index}}</h4>
+                            <p>{{photo.Url}}</p>
+                        </div>
+                    </slide>
+                </carousel>
+            </div>
+            
+            <!--<input type="button" ng-click="openModal()" value="YEAH" />
+            
+            <script type="text/ng-template" id="myModalContent.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">I'm a modal!</h3>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li ng-repeat="item in items">
+                            <a ng-click="selected.item = item">{{ item }}</a>
+                        </li>
+                    </ul>
+                    Selected: <b>{{ selected.item }}</b>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-click="ok()">OK</button>
+                    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                </div>
+            </script>-->
 <!--            Ajouter un visualiseur de photos avec un Carousel de Bootstrap-->
         </div>
     </body>
