@@ -1,0 +1,10 @@
+<div class="modalHead"><span class="glyphicon glyphicon-remove" style="cursor: pointer" ng-click="modalClose()"></span></div>
+<carousel interval="-1">
+    <slide ng-repeat="photo in photosCourant" active="photo.active">
+        <img ng-src="{{photo.Url}}" style="margin:auto;">
+        <div class="carousel-caption">
+            <h4>Slide {{$index}}</h4>
+            <p>{{photo.Url}}</p>
+        </div>
+    </slide>
+</carousel>

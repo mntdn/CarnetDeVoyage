@@ -3,6 +3,7 @@ window._DB = [
         'Day' : '2008-02-11',
         'Pictures' : [
             {'Url' : 'Mandarin_Pair.jpg'}, 
+            {'Url' : 'William_Crooks_at_station.jpg'}, 
             {'Url' : 'Glassy_carbon_and_a_1cm3_graphite_cube_HP68-79.jpg'}
         ],
         'Content' : 'voyage1.html'

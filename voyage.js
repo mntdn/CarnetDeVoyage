@@ -64,8 +64,8 @@ angular.module('voyage', ['ui.bootstrap'])
             return monthNames[monthNumber - 1];
         }
     }]) 
-    .controller('ArticleController', ['$scope', function ($scope) {
-        $scope.DB = window._DB;
+    .controller('ArticleController', function ($scope, $rootScope, $modal) {
+        $rootScope.DB = window._DB;
         $scope.Months = _Months;
         $scope.currentMonth = 0; // contient le mois actuellement affiché
         $scope.prevMonth = function () {
@@ -90,7 +90,7 @@ angular.module('voyage', ['ui.bootstrap'])
             return $scope.currentMonth == $scope.Months.length - 1 ? "visibility: hidden" : "";
         };
         $scope.articleCourant = '';
-        $scope.photosCourant = [];
+        $rootScope.photosCourant = [];
         $scope.moveFirst = function (day, i) {
             // ajoute un décalage au premier jour dans le calendrier 
             // lundi sera ainsi toujours la 1re case
@@ -104,36 +104,33 @@ angular.module('voyage', ['ui.bootstrap'])
             if (i >= 0)
             {
                 $scope.articleCourant = $scope.DB[i].Content;
-                $scope.photosCourant = $scope.DB[i].Pictures;
+                $rootScope.photosCourant = $scope.DB[i].Pictures;
             }
         };
         $scope.randPictureUrl = function (index) {
             // renvoie une image aléatoire de l'entrée d'index "index" dans la DB
             return index == -1 ? '' : $scope.DB[index].Pictures[getRandomInt(0, $scope.DB[index].Pictures.length)].Url;
         };
-        //$scope.openModal = function () {
-        //    var modalInstance = $modal.open();
+        $rootScope.modalInstance = null;
+        $scope.photoCarousel = function (photoIndex) {
+            // activation de la photo cliquée
+            for(var i = 0; i < $rootScope.photosCourant.length; i++)
+                $rootScope.photosCourant[i].active = i == photoIndex ? true : false;
+            $rootScope.modalInstance = $modal.open({
+                    templateUrl: 'modalPictureCarousel.html',
+                    controller: 'ModalController',
+                    resolve: {}
+                });
 
-        //    modalInstance.result.then(function (selectedItem) {
-        //            $scope.selected = selectedItem;
-        //        }, function () {
-        //            console.log('Modal dismissed at: ' + new Date());
-        //        });
-        //};
-    }]);
-
-//var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
-//
-//  $scope.items = items;
-//  $scope.selected = {
-//    item: $scope.items[0]
-//  };
-//
-//  $scope.ok = function () {
-//    $modalInstance.close($scope.selected.item);
-//  };
-//
-//  $scope.cancel = function () {
-//    $modalInstance.dismiss('cancel');
-//  };
-//};
+            $rootScope.modalInstance.result.then(function (selectedItem) {
+                    // fermeture modal
+                }, function () {
+                    // modal dismissed
+                });
+        };
+    })
+    .controller('ModalController', function ($scope, $rootScope) {
+        $scope.modalClose = function () {
+            $rootScope.modalInstance.close();
+        }
+    });
